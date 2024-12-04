@@ -1,5 +1,5 @@
-#+ AUTHOR: Nox Systems
-#+ DESCRIPTION: Basic README
+#+AUTHOR: Nox Systems
+#+DESCRIPTION: Basic README
 
 * Lamina Operating System.
 
