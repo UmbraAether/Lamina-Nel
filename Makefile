@@ -5,12 +5,20 @@ LDPARAMS = -melf_i386
 objects = loader.o kernel.o
 
 %.o: %.cpp
-		g++ $(GPPPARAMS) -o $@ -c $<
+	@echo "Compiling $<..."
+	@g++ $(GPPPARAMS) -o $@ -c $< 2>> >(while read line; do echo "$(shell date): $$line" >> general.log; done) || \
+	{ echo "$(shell date): Compilation failed for $<! Check general.log for details."; exit 1; }
+
 %.o: %.s
-		as $(ASPARAMS) -o $@ $<
+	@echo "Assembling $<..."
+	@as $(ASPARAMS) -o $@ $< 2>> >(while read line; do echo "$(shell date): $$line" >> general.log; done) || \
+	{ echo "$(shell date): Assembly failed for $<! Check general.log for details."; exit 1; }
 
 NoxKernel.bin: linker.ld $(objects)
-		ld $(LDPARAMS) -T $< -o $@ $(objects)
+	@echo "Linking [$(objects)] using $< script."
+	@ld $(LDPARAMS) -T $< -o $@ $(objects) 2>> >(while read line; do echo "$(shell date): $$line" >> general.log; done) || \
+	{ echo "$(shell date): Linking failed! Check general.log for details."; exit 1; }
+
 
 install: NoxKernel.bin
 		@mkdir -p iso/boot/grub/
@@ -19,18 +27,27 @@ install: NoxKernel.bin
 		@grub-mkrescue -o NoxKernel.iso iso
 
 clean:
-	@echo "Running clean..."
-	@for file in $(objects) NoxKernel.bin iso/boot/NoxKernel.bin NoxKernel.iso iso/boot/grub/grub.cfg; do \
+	@echo "Cleaning project..."
+	@for file in $(objects) NoxKernel.bin iso/boot/NoxKernel.bin NoxKernel.iso iso/boot/grub/grub.cfg general.log; do \
 		if [ -e "$$file" ]; then \
 			echo "Removing $$file"; \
 			rm "$$file"; \
-		else \
-			echo "$$file not found, nothing to clean."; \
 		fi; \
 	done
+	@echo "Cleaning complete."
 
-run: NoxKernel.bin
-	qemu-system-i386 -cdrom NoxKernel.iso -no-reboot -net none
+run: NoxKernel.iso
+	@if [ -e NoxKernel.iso ]; then \
+		echo "$(shell date): Starting QEMU with NoxKernel.iso..." >> general.log; \
+		qemu-system-i386 -cdrom NoxKernel.iso -no-reboot -net none || { \
+			echo "$(shell date): QEMU failed to start! Did u run 'make install'." >> general.log; \
+			exit 1; \
+		}; \
+	else \
+		echo "$(shell date): Error: NoxKernel.iso not found. Cannot run QEMU." >> general.log; \
+		echo "Error: NoxKernel.iso not found. Cannot run QEMU."; \
+		exit 1; \
+	fi
 
 install-deps:
 	@echo "Detecting package manager..."
