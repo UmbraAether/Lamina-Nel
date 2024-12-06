@@ -14,3 +14,17 @@ NoxKernel.bin: linker.ld $(objects)
 
 install: NoxKernel.bin
 		sudo cp $< /boot/NoxKernel.bin
+
+clean:
+	@echo "Running clean..."
+	@for file in $(objects) NoxKernel.bin; do \
+		if [ -e "$$file" ]; then \
+			echo "Removing $$file"; \
+			rm "$$file"; \
+		else \
+			echo "$$file not found, nothing to clean."; \
+		fi; \
+	done
+
+run: NoxKernel.bin
+	qemu-system-i386 -kernel ~/NoxSystemsProjects/Lamina/NoxKernel.bin
