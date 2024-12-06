@@ -8,7 +8,6 @@ This operating system is written in C++ as a learning experience and as a draft 
 2. `cd Lamina-Nel`
 3. `install-deps`  
    *Note: This currently works for pacman, apt may have issues with certain packages, no other package managers included so far.*
-=======
 3. `install-deps`  *Note: This currently works for pacman, apt may have issues with certain packages, no other package managers included so far.*
 4. `make install`
 5. `make run`
