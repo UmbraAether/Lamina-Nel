@@ -1,0 +1,34 @@
+# OS-Specific Files
+.DS_Store       # macOS Finder metadata
+Thumbs.db       # Windows thumbnail cache
+
+# IDE/Editor Files
+.idea/          # IntelliJ IDEA project settings
+.vscode/        # Visual Studio Code settings
+*.swp           # Vim swap files
+*~              # Emacs backup files
+
+# Build Artifacts
+*.o             # Object files
+*.elf           # Executables in ELF format
+*.bin           # Binary files
+*.iso           # ISO images
+!NoxKernel.bin   # Your kernel binary
+!NoxKernel.iso   # Your generated ISO file
+
+# Logs and Temporary Files
+*.log           # Log files
+*.tmp           # Temporary files
+tmp/            # Temporary directory
+core            # Core dumps
+
+# Generated Directories
+iso/            # Generated ISO structure
+
+# Debugging Files
+*.gdb           # GDB debugging files
+*.dSYM          # macOS debugging information
+
+# Additional Specifics
+*.bak           # Backup files
+*.old           # Old files
