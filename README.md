@@ -1,6 +1,6 @@
 # Lamina Operating System
 
-This operating system is written in C++ as a learning experience and as a draft for any future re-writes.
+This operating system is written in C++ and is used to build, manage, and create software as i hate linux, BSD, Windows, and most other minor kernels. Why? Because I didn't make them.
 
 ## Building Lamina-Nel
 
